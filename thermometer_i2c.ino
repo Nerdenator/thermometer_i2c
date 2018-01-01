@@ -19,12 +19,6 @@ uint16_t samples[NUMSAMPLES];
 void setup(void) {
   //Serial.begin(9600);
   analogReference(EXTERNAL);
-  Serial.begin(9600);
-  LCDinitialize();
-  LCDsetContrast(50);
-  LCDsetBrightness(8);
-  LCDclear();
-  LCDsetCursor(1,0);
 }
  
 void loop(void) {
@@ -44,15 +38,10 @@ void loop(void) {
   }
   average /= NUMSAMPLES;
  
-  //Serial.print("Average analog reading "); 
-  //Serial.println(average);
- 
   // convert the value to resistance
   average = 1023 / average - 1;
   average = SERIESRESISTOR / average;
-  //Serial.print("Thermistor resistance "); 
-  //Serial.println(average);
- 
+
   float steinhart;
   steinhart = average / THERMISTORNOMINAL;     // (R/Ro)
   steinhart = log(steinhart);                  // ln(R/Ro)
@@ -61,7 +50,7 @@ void loop(void) {
   steinhart = 1.0 / steinhart;                 // Invert
   steinhart -= 273.15;                         // convert to C
   steinhart = steinhart * 1.8 + 32;            // make it freedom units
-  LCDsetCursor(1,1);
+  
   Serial.print("Temp "); 
   Serial.print(steinhart);
   Serial.println(" *F");
